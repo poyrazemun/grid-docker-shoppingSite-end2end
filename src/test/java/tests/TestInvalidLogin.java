@@ -4,6 +4,7 @@ import base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import utils.ConvertJSONToMap;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,7 @@ public class TestInvalidLogin extends BaseTest {
 
     @DataProvider(name = "invalidLoginCredentials")
     public Object[][] invalidLoginDetails() {
-        List<HashMap<String, String>> data = getJSONDataToMap("src/test/java/data/invalidLoginCredentials.json");
+        List<HashMap<String, Object>> data = ConvertJSONToMap.getJSONDataToMap("src/test/java/data/invalidLoginCredentials.json");
         return new Object[][]{
                 {data.get(0)},
                 {data.get(1)},
@@ -20,9 +21,9 @@ public class TestInvalidLogin extends BaseTest {
         };
     }
 
-    @Test(dataProvider = "invalidLoginCredentials")
-    public void testInvalidLogin(HashMap<String, String> data) {
-        landingPage.login(data.get("username"), data.get("password"));
+    @Test(dataProvider = "invalidLoginCredentials", groups = {"noLogin"})
+    public void testInvalidLogin(HashMap<String, Object> data) {
+        landingPage.login((String) data.get("username"), (String) data.get("password"));
         String actualInvalidLoginMessage = landingPage.getTextOfInvalidLoginMessage();
         String expectedInvalidLoginMessage = "Epic sadface: Username and password do not match any user in this service";
         Assert.assertEquals(actualInvalidLoginMessage, expectedInvalidLoginMessage);

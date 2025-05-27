@@ -3,11 +3,9 @@ package pages;
 import base.BasePage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import utils.AlertHandler;
 
 public class LandingPage extends BasePage {
 
@@ -35,7 +33,7 @@ public class LandingPage extends BasePage {
         typeIntoTheElement(userNameInput, username);
         typeIntoTheElement(passwordInput, password);
         clickToElement(loginButton);
-        logger.info("Login credentials -> username: {} and password: {}",username,password);
+        logger.info("Login credentials -> username: {} and password: {}", username, password);
         return new ProductsPage();
     }
 

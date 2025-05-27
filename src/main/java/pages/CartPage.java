@@ -23,14 +23,16 @@ public class CartPage extends BasePage {
     @FindBy(xpath = "//a[@class='shopping_cart_link']")
     private WebElement shoppingCartIcon;
 
+    @FindBy(xpath = "//button[@id='continue-shopping']")
+    private WebElement continueShoppingButton;
+
+    @FindBy(xpath = "//button[@id='checkout']")
+    private WebElement checkOutButton;
+
     public By removeButtonXpath(String productName) {
         logger.info("remove-{}", ConvertStringToSlug.convertToSlug(productName));
         return new By.ById("remove-" + ConvertStringToSlug.convertToSlug(productName));
     }
-
-    //By addToCartButtonXpath = new By.ByXPath("./ancestor::div[1]/following-sibling::div[1]//button[normalize-space(text())='Add to cart']");
-    //By removeButtonXpath = new By.ByXpath("//button[@id='remove-sauce-labs-backpack']")
-
 
     public WebElement getRemoveButton(String productName) {
         By removeButtonXpath = new By.ByXPath("//button[@id='remove-" + ConvertStringToSlug.convertToSlug(productName) + "']");
@@ -40,10 +42,15 @@ public class CartPage extends BasePage {
 
     public void removeProduct(String productName) {
         getRemoveButton(productName).click();
-        logger.info(shoppingCartIcon.getText());
+        logger.info("{} -> {}", productName, shoppingCartIcon.getText());
     }
 
     public boolean productIsRemovedFromCart(String productName) {
         return !shoppingCartIcon.getText().equals("1");
+    }
+
+    public CheckOutStepOnePage goToCheckOutPage() {
+        clickToElement(checkOutButton);
+        return new CheckOutStepOnePage();
     }
 }

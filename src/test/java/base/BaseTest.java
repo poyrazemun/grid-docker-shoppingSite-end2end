@@ -6,28 +6,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.*;
 import pages.LandingPage;
+import pages.ProductsPage;
 import utils.ConfigReader;
 import utils.TakeScreenshotForFailures;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class BaseTest {
     protected WebDriver driver;
     public static LandingPage landingPage;
+    protected ProductsPage productsPage;
 
     @BeforeMethod(alwaysRun = true)
-    public void setUp() {
+    public void setUp(Method method) {
         driver = Driver.getDriver();
-        String url = ConfigReader.get("url");
-        driver.get(url);
+        driver.get(ConfigReader.get("url"));
         landingPage = new LandingPage();
+        Test testAnnotation = method.getAnnotation(Test.class);
+        String[] groups = testAnnotation.groups();
+        if (Arrays.asList(groups).contains("loginRequired")) {
+            productsPage = landingPage.login(ConfigReader.get("user"), ConfigReader.get("password"));
+        }
 
     }
 
@@ -40,33 +48,6 @@ public class BaseTest {
         }
 
         Driver.quitDriver();
-    }
-
-
-    //Getting DATA from JSON file
-    public List<HashMap<String, String>> getJSONDataToMap(String filePath) {
-
-        //reading JSON to String
-        String jsonContent;
-        try {
-            jsonContent = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //converting String to HashMap
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<HashMap<String, String>> data;
-        try {
-            data = objectMapper.readValue(jsonContent, new TypeReference<>() {
-            });
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        return data;
-
     }
 
 }

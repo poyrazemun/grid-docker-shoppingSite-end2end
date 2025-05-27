@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public abstract class BasePage {
 
@@ -56,13 +57,25 @@ public abstract class BasePage {
         return wait.until(ExpectedConditions.visibilityOf(element)).getText();
     }
 
-    //check if element is visible
+    public boolean isElementNotPresent(By locator) {
+        return driver.findElements(locator).isEmpty();
+    }
+
     public boolean isElementVisible(By locator) {
         try {
             findElement(locator);
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public boolean isElementNotVisible(By locator) {
+        try {
+            wait.until(ExpectedConditions.visibilityOf(findElement(locator)));
+            return false; // görünüyorsa false
+        } catch (Exception e) {
+            return true; // görünmüyorsa true
         }
     }
 
@@ -75,8 +88,23 @@ public abstract class BasePage {
         }
     }
 
+
+    public boolean isElementNotVisible(WebElement element) {
+        try {
+            wait.until(ExpectedConditions.visibilityOf(element));
+            return false; // görünüyorsa false
+        } catch (Exception e) {
+            return true; // görünmüyorsa true
+        }
+    }
+
+
     public void waitForElementToAppear(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitForElementToDisappear(WebElement element) {
+        wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
 

@@ -4,6 +4,8 @@
     <test name="Successful Login/Failed Login">
         <classes>
             <class name="tests.TestInvalidLogin"/>
+            <class name="tests.TestAddProductToCart"/>
+            <class name="tests.TestRemoveProductFromCart"/>
         </classes>
     </test>
 

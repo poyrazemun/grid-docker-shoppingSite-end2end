@@ -5,21 +5,36 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ConfigReader {
-    private static final Properties properties;
+    private static final Properties properties = new Properties();
+    private static final String FILE_PATH = "src/main/resources/config.properties";
+    private static boolean isLoaded = false;
 
-    static {
-        try {
-            FileInputStream file = new FileInputStream("src/main/resources/config.properties");
-            properties = new Properties();
-            properties.load(file);
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Configuration file not found.");
+    private static void loadData() {
+        if (!isLoaded) {
+            try (FileInputStream input = new FileInputStream(FILE_PATH)) {
+                properties.load(input);
+                isLoaded = true;
+            } catch (Exception e) {
+                throw new RuntimeException("Config file not found at given path: " + FILE_PATH, e);
+            }
         }
     }
 
     public static String get(String key) {
+
+        String jvmValue = System.getProperty(key);
+        if (jvmValue != null) {
+            return jvmValue;
+        }
+
+        String envValue = System.getenv(key);
+        if (envValue != null) {
+            return envValue;
+        }
+        if (!isLoaded) {
+            loadData();
+        }
+
         return properties.getProperty(key);
     }
 }

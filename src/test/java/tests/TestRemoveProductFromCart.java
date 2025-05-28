@@ -20,7 +20,8 @@ public class TestRemoveProductFromCart extends BaseTest {
 
     @DataProvider(name = "products")
     public Object[][] products() {
-        List<String> productList = ConvertJSONToListOfString.getJSONDataToListOfString("src/test/java/data/products.json");
+        String productsFilePath = System.getProperty("productsFilePath", "src/test/java/data/products.json");
+        List<String> productList = ConvertJSONToListOfString.getJSONDataToListOfString(productsFilePath);
         Object[][] result = new Object[productList.size()][1];
         for (int i = 0; i < productList.size(); i++) {
             result[i][0] = productList.get(i);

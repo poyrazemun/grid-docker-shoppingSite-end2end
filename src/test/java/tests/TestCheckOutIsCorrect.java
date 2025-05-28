@@ -23,7 +23,8 @@ public class TestCheckOutIsCorrect extends BaseTest {
 
     @DataProvider(name = "productsAndPeople")
     public Object[][] productsAndPeople() {
-        List<HashMap<String, Object>> data = ConvertJSONToMap.getJSONDataToMap("src/test/java/data/productsAndPeople.json");
+        String jsonFilePath = System.getProperty("jsonFilePath", "src/test/java/data/productsAndPeople.json");
+        List<HashMap<String, Object>> data = ConvertJSONToMap.getJSONDataToMap(jsonFilePath);
         return new Object[][]{
                 {data.get(0)},
                 {data.get(1)},

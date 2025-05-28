@@ -16,7 +16,8 @@ public class TestInvalidLogin extends BaseTest {
 
     @DataProvider(name = "invalidLoginCredentials")
     public Object[][] invalidLoginDetails() {
-        List<HashMap<String, Object>> data = ConvertJSONToMap.getJSONDataToMap("src/test/java/data/invalidLoginCredentials.json");
+        String invalidLoginFilePath = System.getProperty("invalidLoginFilePath", "src/test/java/data/invalidLoginCredentials.json");
+        List<HashMap<String, Object>> data = ConvertJSONToMap.getJSONDataToMap(invalidLoginFilePath);
         return new Object[][]{
                 {data.get(0)},
                 {data.get(1)},

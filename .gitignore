@@ -42,6 +42,6 @@ build/
 ### Mac OS ###
 .DS_Store
 
-
+/uiDesigner.xml
 /logs
 /screenshots/

@@ -42,7 +42,6 @@ public class CartPage extends BasePage {
 
     public void removeProduct(String productName) {
         getRemoveButton(productName).click();
-        logger.info("{} -> {}", productName, shoppingCartIcon.getText());
     }
 
     public boolean productIsRemovedFromCart(String productName) {

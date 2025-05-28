@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.CartPage;
+import pages.CheckOutCompletePage;
 import pages.CheckOutStepOnePage;
 import pages.CheckOutStepTwoPage;
 import utils.ConvertJSONToMap;
@@ -15,11 +16,11 @@ import utils.ConvertJSONToMap;
 import java.util.HashMap;
 import java.util.List;
 
-public class TestCheckOutIsCorrect extends BaseTest {
-
+public class TestOrderIsCompleted extends BaseTest {
     public static CartPage cartPage;
     public static CheckOutStepOnePage checkOutStepOnePage;
     public static CheckOutStepTwoPage checkOutStepTwoPage;
+    public static CheckOutCompletePage checkOutCompletePage;
 
     @DataProvider(name = "productsAndPeople")
     public Object[][] productsAndPeople() {
@@ -32,15 +33,18 @@ public class TestCheckOutIsCorrect extends BaseTest {
         };
     }
 
-    @Feature("Feature Checkout")
+    @Feature("Placing an Order Feature")
     @Severity(SeverityLevel.NORMAL)
-    @Test(dataProvider = "productsAndPeople", groups = {"loginRequired"}, description = "Verify that user can checkout successfully.")
-    public void testCheckoutIsCorrect(HashMap<String, Object> data) {
+    @Test(dataProvider = "productsAndPeople", groups = {"loginRequired"}, description = "Verify that user can finish his/her order successfully.")
+    public void testOrderIsCompleted(HashMap<String, Object> data) {
         productsPage.addProductToCart((String) data.get("product"));
         cartPage = productsPage.goToCartPage();
         checkOutStepOnePage = cartPage.goToCheckOutPage();
         checkOutStepTwoPage = checkOutStepOnePage.submitTheForm((String) data.get("firstName"), (String) data.get("lastName"), (String) data.get("postalCode"));
-        Assert.assertTrue(checkOutStepTwoPage.isCheckOutCorrect(), "Checkout is not correct!");
+        checkOutCompletePage = checkOutStepTwoPage.goToCheckOutCompletePage();
+        String expectedConfirmationMessage = "Thank you for your order!";
+        String actualConfirmationMessage = checkOutCompletePage.getTextOfThankYouForYourOrderElement();
+        Assert.assertEquals(actualConfirmationMessage, expectedConfirmationMessage);
 
     }
 }

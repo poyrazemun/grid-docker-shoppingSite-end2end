@@ -1,6 +1,9 @@
 package tests;
 
 import base.BaseTest;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -20,7 +23,9 @@ public class TestAddProductToCart extends BaseTest {
         return result;
     }
 
-    @Test(dataProvider = "products", priority = 1, groups = {"loginRequired"})
+    @Feature("Adding Product to the Cart Feature")
+    @Severity(SeverityLevel.NORMAL)
+    @Test(dataProvider = "products", groups = {"loginRequired"}, description = "Verify that user can add a product to the cart.")
     public void testProductIsAddedToCart(String productName) {
         productsPage.addProductToCart(productName);
         Assert.assertTrue(productsPage.isProductAddedToCart(productName));

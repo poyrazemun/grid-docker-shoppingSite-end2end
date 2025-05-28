@@ -1,6 +1,9 @@
 package tests;
 
 import base.BaseTest;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -25,7 +28,9 @@ public class TestRemoveProductFromCart extends BaseTest {
         return result;
     }
 
-    @Test(dataProvider = "products", priority = 1, groups = {"loginRequired"})
+    @Feature("Removing Product from the Cart Feature")
+    @Severity(SeverityLevel.NORMAL)
+    @Test(dataProvider = "products", groups = {"loginRequired"}, description = "Verify that user can remove a product from the cart.")
     public void testProductIsRemovedFromCart(String productName) {
         productsPage.addProductToCart(productName);
         sa.assertTrue(productsPage.isProductAddedToCart(productName));

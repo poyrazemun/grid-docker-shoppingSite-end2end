@@ -1,6 +1,9 @@
 package tests;
 
 import base.BaseTest;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -21,7 +24,9 @@ public class TestInvalidLogin extends BaseTest {
         };
     }
 
-    @Test(dataProvider = "invalidLoginCredentials", groups = {"noLogin"})
+    @Feature("Invalid Login")
+    @Severity(SeverityLevel.NORMAL)
+    @Test(dataProvider = "invalidLoginCredentials", groups = {"noLogin"}, description = "Verify that user can not login with invalid credentials")
     public void testInvalidLogin(HashMap<String, Object> data) {
         landingPage.login((String) data.get("username"), (String) data.get("password"));
         String actualInvalidLoginMessage = landingPage.getTextOfInvalidLoginMessage();

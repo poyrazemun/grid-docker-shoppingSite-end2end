@@ -1,26 +1,22 @@
 package base;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
+import listeners.LoggingListener;
+import listeners.RetryTransformer;
+import listeners.TestListener;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 import pages.LandingPage;
 import pages.ProductsPage;
 import utils.ConfigReader;
-import utils.TakeScreenshotForFailures;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
+@Listeners({TestListener.class, LoggingListener.class, RetryTransformer.class})
 public class BaseTest {
     protected WebDriver driver;
     public static LandingPage landingPage;
@@ -42,11 +38,6 @@ public class BaseTest {
 
     @AfterMethod
     public void tearDown(ITestResult result) {
-        if (ITestResult.FAILURE == result.getStatus()) {
-            TakeScreenshotForFailures.takeScreenshot(Driver.getDriver(), result.getName());
-            Driver.quitDriver();
-        }
-
         Driver.quitDriver();
     }
 

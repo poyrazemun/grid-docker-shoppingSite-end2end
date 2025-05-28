@@ -12,6 +12,9 @@ public class TestListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         WebDriver driver = Driver.getDriver();
         String testName = result.getMethod().getMethodName();
-        TakeScreenshotForFailures.takeScreenshot(driver, testName);
+
+        TakeScreenshotForFailures.takeScreenshot(driver, testName); //this line saves the screenshot into my file system (local)
+
+        TakeScreenshotForFailures.attachScreenshotToAllure(driver); //this line saves the screenshot into Allure report
     }
 }

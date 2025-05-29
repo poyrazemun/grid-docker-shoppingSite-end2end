@@ -57,9 +57,10 @@ public class BaseTest {
         }
     }
 
-
+    @Parameters("browser")
     @BeforeMethod(alwaysRun = true)
-    public void setUp(Method method) {
+    public void setUp(@Optional("chrome") String browser, Method method) {
+        System.setProperty("browser", browser);
         driver = Driver.getDriver();
         driver.get(ConfigReader.get("url"));
         landingPage = new LandingPage();

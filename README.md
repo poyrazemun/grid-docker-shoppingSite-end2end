@@ -58,13 +58,20 @@ grid-docker-shoppingSite-end2end/
 mvn clean install
 ```
 
-### 2. Run the test suite
+### 2. Start Selenium Grid with Docker
 
 ```bash
-mvn test -P end2end
+docker-compose up -d
+> ℹ️ This will start the Selenium Hub along with Chrome and Firefox nodes as defined in your docker-compose.yml
 ```
 
-### 3. Serve the Allure report
+### 3. Run the test suite
+
+```bash
+mvn test -Pend2end
+```
+
+### 4. Serve the Allure report
 
 ```bash
 allure serve target/allure-results
@@ -79,6 +86,21 @@ allure generate target/allure-results --clean -o target/allure-report
 ```
 
 ---
+
+## Browser Compatibility Note
+
+### Important Notice for Chrome Users
+
+When logging in with valid credentials using Google Chrome, a security pop-up may appear indicating that the password
+was found in a data breach.
+This browser-level warning cannot be handled through JavaScript alerts and may interrupt your test flow.
+
+🔄 __Recommendation__:
+For uninterrupted automation testing, please use Firefox or Microsoft Edge with the Selenium Grid setup or locally. Or
+if you really want to
+execute the tests on Chrome browser either add __--incognito__ to the chromeOptions. In fact, I have applied this
+approach in my framework.
+Please see the `Driver` class.
 
 ## 📌 Notes
 

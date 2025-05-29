@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import utils.ConfigReader;
@@ -30,7 +31,7 @@ public class Driver {
                     ? System.getProperty("browser")
                     : ConfigReader.get("browser").toLowerCase();
 
-            boolean isRemote = Boolean.parseBoolean(System.getProperty("remote", "false")); // default local
+            boolean isRemote = Boolean.parseBoolean(System.getProperty("remote", "false"));
             boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless", "true"));
 
             logger.info("Browser: {}, Remote: {}, Headless: {}", browser, isRemote, isHeadless);
@@ -50,6 +51,7 @@ public class Driver {
 
                         case "chrome":
                             ChromeOptions chromeOptions = new ChromeOptions();
+                            chromeOptions.addArguments("--incognito");
                             if (isHeadless) {
                                 chromeOptions.addArguments("--headless=new");
                                 chromeOptions.addArguments("--window-size=1920,1080");
@@ -74,6 +76,7 @@ public class Driver {
 
                         case "chrome":
                             ChromeOptions chromeOptions = new ChromeOptions();
+                            chromeOptions.addArguments("--incognito");
                             if (isHeadless) {
                                 chromeOptions.addArguments("--headless=new");
                                 chromeOptions.addArguments("--window-size=1920,1080");
@@ -82,7 +85,12 @@ public class Driver {
                             break;
 
                         case "edge":
-                            driver.set(new EdgeDriver());
+                            EdgeOptions edgeOptions = new EdgeOptions();
+                            if (isHeadless) {
+                                edgeOptions.addArguments("--headless=new");
+                                edgeOptions.addArguments("--window-size=1920,1080");
+                            }
+                            driver.set(new EdgeDriver(edgeOptions));
                             break;
 
                         default:

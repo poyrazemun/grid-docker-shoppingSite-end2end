@@ -59,6 +59,15 @@ public class Driver {
                             driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), chromeOptions));
                             break;
 
+                        case "edge":
+                            EdgeOptions edgeOptions = new EdgeOptions();
+                            if (isHeadless) {
+                                edgeOptions.addArguments("--headless=new");
+                                edgeOptions.addArguments("--window-size=1920,1080");
+                            }
+                            driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), edgeOptions));
+                            break;
+
                         default:
                             throw new IllegalArgumentException("Remote WebDriver does not support browser: " + browser);
                     }

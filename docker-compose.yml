@@ -16,14 +16,18 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  firefox-node-template: &firefox-node
-    image: selenium/node-firefox:4.21.0
+  chrome-node:
+    image: selenium/node-chrome:4.21.0
+    container_name: chrome-node
     depends_on:
       - selenium-hub
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "7900:7900" # VNC erişimi istersen
+    shm_size: 2g
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:5555/status" ]
       interval: 30s
@@ -35,17 +39,48 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  firefox-node-1:
-    <<: *firefox-node
+  firefox-node:
+    image: selenium/node-firefox:4.21.0
+    container_name: firefox-node
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "7901:7900"
+    shm_size: 2g
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5555/status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
-  firefox-node-2:
-    <<: *firefox-node
-
-  firefox-node-3:
-    <<: *firefox-node
-
-  firefox-node-4:
-    <<: *firefox-node
-
-  firefox-node-5:
-    <<: *firefox-node
+  edge-node:
+    image: selenium/node-edge:4.21.0
+    container_name: edge-node
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "7902:7900"
+    shm_size: 2g
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5555/status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

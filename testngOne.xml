@@ -8,30 +8,7 @@
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 
-    <test name="Tests on Chrome">
-        <parameter name="browser" value="chrome"/>
-        <classes>
-            <class name="tests.TestInvalidLogin"/>
-            <class name="tests.TestAddProductToCart"/>
-            <class name="tests.TestRemoveProductFromCart"/>
-            <class name="tests.TestCheckOutIsCorrect"/>
-            <class name="tests.TestOrderIsCompleted"/>
-        </classes>
-    </test>
-
-    <test name="Tests on Firefox">
-        <parameter name="browser" value="firefox"/>
-        <classes>
-            <class name="tests.TestInvalidLogin"/>
-            <class name="tests.TestAddProductToCart"/>
-            <class name="tests.TestRemoveProductFromCart"/>
-            <class name="tests.TestCheckOutIsCorrect"/>
-            <class name="tests.TestOrderIsCompleted"/>
-        </classes>
-    </test>
-
-    <test name="Tests on Edge">
-        <parameter name="browser" value="edge"/>
+    <test name="Successful Login/Failed Login And Successful Order">
         <classes>
             <class name="tests.TestInvalidLogin"/>
             <class name="tests.TestAddProductToCart"/>

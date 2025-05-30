@@ -12,6 +12,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import utils.ConfigReader;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 
@@ -38,6 +40,12 @@ public class Driver {
 
             try {
                 if (isRemote) {
+                    URL gridUrl;
+                    try {
+                        gridUrl = new URI(System.getProperty("grid.url", "http://localhost:4444/wd/hub")).toURL();
+                    } catch (URISyntaxException | java.net.MalformedURLException e) {
+                        throw new RuntimeException("Invalid Selenium Grid URL", e);
+                    }
                     switch (browser) {
                         case "firefox":
                             FirefoxOptions firefoxOptions = new FirefoxOptions();
@@ -46,26 +54,26 @@ public class Driver {
                                 firefoxOptions.addArguments("--width=1920");
                                 firefoxOptions.addArguments("--height=1080");
                             }
-                            driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), firefoxOptions));
+                            driver.set(new RemoteWebDriver(gridUrl, firefoxOptions));
                             break;
 
                         case "chrome":
                             ChromeOptions chromeOptions = new ChromeOptions();
                             chromeOptions.addArguments("--incognito");
                             if (isHeadless) {
-                                chromeOptions.addArguments("--headless=new");
+                                chromeOptions.addArguments("--headless");
                                 chromeOptions.addArguments("--window-size=1920,1080");
                             }
-                            driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), chromeOptions));
+                            driver.set(new RemoteWebDriver(gridUrl, chromeOptions));
                             break;
 
                         case "edge":
                             EdgeOptions edgeOptions = new EdgeOptions();
                             if (isHeadless) {
-                                edgeOptions.addArguments("--headless=new");
+                                edgeOptions.addArguments("--headless");
                                 edgeOptions.addArguments("--window-size=1920,1080");
                             }
-                            driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), edgeOptions));
+                            driver.set(new RemoteWebDriver(gridUrl, edgeOptions));
                             break;
 
                         default:
@@ -87,7 +95,7 @@ public class Driver {
                             ChromeOptions chromeOptions = new ChromeOptions();
                             chromeOptions.addArguments("--incognito");
                             if (isHeadless) {
-                                chromeOptions.addArguments("--headless=new");
+                                chromeOptions.addArguments("--headless");
                                 chromeOptions.addArguments("--window-size=1920,1080");
                             }
                             driver.set(new ChromeDriver(chromeOptions));
@@ -96,7 +104,7 @@ public class Driver {
                         case "edge":
                             EdgeOptions edgeOptions = new EdgeOptions();
                             if (isHeadless) {
-                                edgeOptions.addArguments("--headless=new");
+                                edgeOptions.addArguments("--headless");
                                 edgeOptions.addArguments("--window-size=1920,1080");
                             }
                             driver.set(new EdgeDriver(edgeOptions));
